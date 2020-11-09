@@ -1,0 +1,70 @@
+body {
+    font-size: 16px;
+}
+
+section header {
+    border-bottom: 1px solid #b9babe;
+    margin: 0 25px;
+    padding-bottom: 25px;
+    text-align: center;
+    font-family: "Raleway Medium";
+}
+
+header h1, h2 {
+    font-family: Roboto;
+    font-weight: lighter;
+}
+
+.list-horizontal .list-item {
+    display: inline-block;
+}
+
+.row {
+    display: flex;
+    padding: 20px 23px;
+}
+
+.row .col {
+    flex: 50%;
+}
+
+.button {
+    display: flex;
+    margin-top: 10px;
+    padding: 6px 17px;
+    background-color: #6c757d;
+    color: #fff;
+    border-style: none;
+    border-radius: 2px;
+    text-transform: uppercase;
+}
+
+.button:hover {
+    background-color: #5a6268;
+    cursor: pointer;
+}
+
+.site-nav {
+    background-color: #f8f9fa;
+}
+
+.site-nav .list-item {
+    padding: 15px 25px;
+}
+
+.container {
+    background-color: #e9ecef;
+    height: 500px;
+    width: 1046px;
+    padding: 15px;
+    margin: 0 auto;
+}
+
+.container:before {
+    background-image: url('/static/pets-banner.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: block;
+    content: '';
+    height: 300px;
+}
