@@ -1,0 +1,40 @@
+.pet-info, .pet-img {
+    padding: 15px;
+    display: inline-block;
+}
+
+.pet-img {
+    width: 33%;
+}
+
+img {
+    max-width: 100%;
+    border-radius: 5px;
+}
+
+.pet-info {
+    width: 60%;
+    vertical-align: top;
+}
+
+.button.button-blue {
+    background-color: #2e90d9;
+    display: inline-block;
+}
+
+.pet-buttons {
+    padding-top: 10px;
+}
+
+.list-pet-details {
+    font-weight: 500;
+}
+
+.list-pet-details .list-item {
+    width: 32%;
+}
+
+.i {
+    font-size: 16px;
+}
+
