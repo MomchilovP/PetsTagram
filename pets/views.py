@@ -1,23 +1,84 @@
 from django.shortcuts import render, redirect
 
 # Create your views here.
-from pets.models import Pet, Like
+from pets.forms.comment_form import CommentForm
+from pets.forms.pet_form import PetForm
+from pets.models import Pet, Like, Comment
 
 
 def list_pets(request):
     context = {
         'pets': Pet.objects.all()
     }
-    return render(request, 'pets/pets_list.html', context)
+    return render(request, 'pet_list.html', context)
 
 
-def show_pet_details(request, pk):
+def details_or_comment_pet(request, pk):
     pet = Pet.objects.get(pk=pk)
-    pet.likes_count = pet.like_set.count()
-    context = {
-        'pet': pet,
-    }
-    return render(request, 'pets/pet_details.html', context)
+    if request.method == 'GET':
+        context = {
+            'pet': pet,
+            'form': CommentForm(),
+        }
+        return render(request, 'pet_detail.html', context)
+    else:
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = Comment(text=form.cleaned_data['text'])
+            comment.pet = pet
+            comment.save()
+            return redirect('pet details or comment', pk)
+        context = {
+            'pet': pet,
+            'form': form,
+        }
+
+
+def persist_pet(request, pet, template_name):
+    if request.method == 'GET':
+        form = PetForm(instance=pet)
+        context = {
+            'form': form,
+            'pet': pet,
+        }
+        return render(request, f'{template_name}.html', context)
+    else:
+        form = PetForm(
+            request.POST,
+            instance=pet
+        )
+
+        if form.is_valid():
+            form.save()
+            return redirect('pet details or comment', pet.pk)
+
+        context = {
+            'form': form,
+            'pet': pet,
+        }
+        return render(request, f'{template_name}.html', context)
+
+
+def edit_pet(request, pk):
+    pet = Pet.objects.get(pk=pk)
+    return persist_pet(request, pet, 'pet_edit')
+
+
+def create_pet(request):
+    pet = Pet()
+    return persist_pet(request, pet, 'pet_create')
+
+
+def delete_pet(request, pk):
+    pet = Pet.objects.get(pk=pk)
+    if request.method == 'GET':
+        context = {
+            'pet': pet,
+        }
+        return render(request, 'pet_delete.html', context)
+    else:
+        pet.delete()
+        return redirect('list pets')
 
 
 def like_pet(request, pk):
@@ -25,4 +86,8 @@ def like_pet(request, pk):
     like = Like(test=str(pk))
     like.pet = pet
     like.save()
-    return redirect('pet details', pk)
+    return redirect('pet details or comment', pk)
+
+
+def comment_pet(request, pk):
+    pass
