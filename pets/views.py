@@ -33,6 +33,8 @@ def details_or_comment_pet(request, pk):
             'form': form,
         }
 
+        return render(request, 'pet_detail.html', context)
+
 
 def persist_pet(request, pet, template_name):
     if request.method == 'GET':
@@ -45,6 +47,7 @@ def persist_pet(request, pet, template_name):
     else:
         form = PetForm(
             request.POST,
+            request.FILES,
             instance=pet
         )
 

@@ -18,4 +18,4 @@ class PetAdmin(admin.ModelAdmin):
 
 admin.site.register(Pet, PetAdmin)
 admin.site.register(Comment)
-# admin.site.register(Like)
+admin.site.register(Like)
