@@ -7,5 +7,11 @@
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:C:\Users\Petar\Desktop\Django_softuni\Petstagram\db.sqlite3</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="postgres@localhost" uuid="deeca9f3-4b75-474c-b869-28420cd54e4c">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/postgres</jdbc-url>
+    </data-source>
   </component>
 </project>

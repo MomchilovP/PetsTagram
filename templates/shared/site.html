@@ -20,12 +20,21 @@
             <a class="nav-link" href="/">Home</a>
             <a class="nav-link" href="{% url 'list pets' %}">All Pet Photos</a>
             <a class="nav-link" href="{% url 'create pet' %}">Add Pet Photo</a>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Login</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Sign in</a>
-            </li>
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'user profile' user.pk %}">{{ user.username }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'signout user' %}">Sign out</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Sign in</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'signup user' %}">Sign up</a>
+                </li>
+            {% endif %}
         </ul>
     </div>
 </nav>
