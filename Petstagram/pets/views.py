@@ -1,20 +1,19 @@
+from django.contrib.auth import mixins as auth_mixins
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views import generic as views
 
-# Create your views here.
-from Petstagram.accounts.decorators import user_required
 from Petstagram.core.clean_up import clean_up_files
 from Petstagram.pets.forms.comment_form import CommentForm
 from Petstagram.pets.forms.pet_form import PetForm
 from Petstagram.pets.models import Pet, Like, Comment
 
 
-@login_required
-def list_pets(request):
-    context = {
-        'pets': Pet.objects.all()
-    }
-    return render(request, 'pet_list.html', context)
+class PetsListView(views.ListView):
+    model = Pet
+    template_name = 'pet_list.html'
+    context_object_name = 'pets'
 
 
 @login_required
@@ -47,45 +46,36 @@ def details_or_comment_pet(request, pk):
         return render(request, 'pet_detail.html', context)
 
 
-def persist_pet(request, pet, template_name):
-    if request.method == 'GET':
-        form = PetForm(instance=pet)
-        context = {
-            'form': form,
-            'pet': pet,
-        }
-        return render(request, f'{template_name}.html', context)
-    else:
-        old_image = pet.image
-        form = PetForm(
-            request.POST,
-            request.FILES,
-            instance=pet
-        )
+class CreatePetView(auth_mixins.LoginRequiredMixin, views.CreateView):
+    template_name = 'pet_create.html'
+    model = Pet
+    form_class = PetForm
 
-        if form.is_valid():
-            if old_image:
-                clean_up_files(old_image.path)
-            form.save()
-            return redirect('pet details or comment', pet.pk)
+    def get_success_url(self):
+        url = reverse_lazy('pet details or comment', kwargs={'pk': self.object.id})
+        return url
 
-        context = {
-            'form': form,
-            'pet': pet,
-        }
-        return render(request, f'{template_name}.html', context)
+    def form_valid(self, form):
+        pet = form.save(commit=False)
+        pet.user = self.request.user
+        pet.save()
+        return super().form_valid(form)
 
 
-@user_required(Pet, methods=['POST'])
-def edit_pet(request, pk):
-    pet = Pet.objects.get(pk=pk)
-    return persist_pet(request, pet, 'pet_edit')
+class UpdatePetView(auth_mixins.LoginRequiredMixin, views.UpdateView):
+    template_name = 'pet_edit.html'
+    model = Pet
+    form_class = PetForm
 
+    def get_success_url(self):
+        url = reverse_lazy('pet details or comment', kwargs={'pk': self.object.id})
+        return url
 
-@login_required
-def create_pet(request):
-    pet = Pet()
-    return persist_pet(request, pet, 'pet_create')
+    def form_valid(self, form):
+        old_image = self.get_object().image
+        if old_image:
+            clean_up_files(old_image.path)
+        return super().form_valid(form)
 
 
 @login_required
