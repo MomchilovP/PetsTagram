@@ -2,11 +2,11 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 # Create your views here.
-from accounts.decorators import user_required
-from core.clean_up import clean_up_files
-from pets.forms.comment_form import CommentForm
-from pets.forms.pet_form import PetForm
-from pets.models import Pet, Like, Comment
+from Petstagram.accounts.decorators import user_required
+from Petstagram.core.clean_up import clean_up_files
+from Petstagram.pets.forms.comment_form import CommentForm
+from Petstagram.pets.forms.pet_form import PetForm
+from Petstagram.pets.models import Pet, Like, Comment
 
 
 @login_required

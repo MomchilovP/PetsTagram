@@ -1,6 +1,6 @@
 from django.contrib import admin
 
 # Register your models here.
-from accounts.models import UserProfile
+from Petstagram.accounts.models import UserProfile
 
 admin.site.register(UserProfile)

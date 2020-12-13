@@ -1,8 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
-from accounts.models import UserProfile
-from core.BootstrapFormMixin import BootstrapFormMixin
+from Petstagram.accounts.models import UserProfile
+from Petstagram.core.BootstrapFormMixin import BootstrapFormMixin
 
 
 class SignUpForm(UserCreationForm, BootstrapFormMixin):
